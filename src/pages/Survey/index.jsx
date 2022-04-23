@@ -10,7 +10,7 @@ function Survey() {
 
   return (
     <div>
-      <h1>Questionnaire 🧮</h1>
+      <h1>Questionnaire</h1>
       {questionNumber ? (
         <h2>Question {questionNumber}</h2>
       ) : (
