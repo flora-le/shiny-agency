@@ -1,20 +1,14 @@
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 import styled from 'styled-components'
-import colors from '../../utils/style/colors'
-import logoShiny from '../../assets/dark-logo.png'
 
-const StyledLink = styled(Link)`
-  margin: 10px;
-  padding: 15px;
-  color: ${colors.secondary};
-  text-decoration: none;
-  font-size: 18px;
-  ${(props) =>
-    props.$isFullLink &&
-    `color: white; border-radius: 30px; background-color: ${colors.primary};`}
-`
+import { StyledLink } from '../../utils/style/Atoms'
+import { ThemeContext } from '../../utils/context'
+import logoShiny from '../../assets/dark-logo.png'
+// import colors from '../../utils/style/colors'
+
 const NavbarStyle = styled.nav`
-  padding-bottom: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-between;
 `
@@ -22,20 +16,56 @@ const LogoImage = styled.img`
   height: 100%;
   width: 100px;
   object-fit: cover;
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode && 'rgba(255, 255, 255, 0.20);'};
+  border-radius: 15px;
 `
 
-// ${({ props }) =>
-//   props.$isFullLink &&
-//   `color: white; border-radius: 30px; background-color: #5843E4;`}
+// const navLinks = [
+//   { to: '/', name: 'home', content: 'Home' },
+//   { to: '/freelances', name: 'freelances', content: 'Profiles' },
+//   { to: '/survey/1', name: 'survey', content: 'Begin test' },
+// ]
 
 function Header() {
+  const { theme } = useContext(ThemeContext)
+
   return (
     <NavbarStyle>
-      <LogoImage src={logoShiny} alt="logo-shiny" />
+      <LogoImage
+        src={logoShiny}
+        alt="logo-shiny"
+        isDarkMode={theme === 'dark'}
+      />
       <div>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/freelances">Profiles</StyledLink>
-        <StyledLink to="/survey/1" $isFullLink>
+        {/* {navLinks.map((navLink, index) =>
+          navLink.name !== 'survey' ? (
+            <StyledLink
+              key={`${navLink.name}-${index}`}
+              to={navLink.to}
+              $isDarkMode={theme === 'dark'}
+            >
+              {navLink.content}
+            </StyledLink>
+          ) : (
+            <StyledLink
+              key={`${navLink.name}-${index}`}
+              to={navLink.to}
+              $isDarkMode={theme === 'dark'}
+              $isFullLink
+            >
+              {navLink.content}
+            </StyledLink>
+          )
+        )} */}
+
+        <StyledLink to="/" isDarkMode={theme === 'dark'}>
+          Home
+        </StyledLink>
+        <StyledLink to="/freelances" isDarkMode={theme === 'dark'}>
+          Profiles
+        </StyledLink>
+        <StyledLink to="/survey/1" $isFullLink $isDarkMode={theme === 'dark'}>
           Test
         </StyledLink>
       </div>

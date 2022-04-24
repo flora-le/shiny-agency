@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { createGlobalStyle } from 'styled-components'
+import { ThemeProvider } from './utils/context'
+import { SurveyProvider } from './utils/context'
 
 import './style/index.css'
 import Home from './pages/Home'
@@ -11,30 +12,29 @@ import Survey from './pages/Survey'
 import Results from './pages/Results'
 import Freelances from './pages/Freelances'
 import Error from './components/Error'
+import Footer from './components/Footer'
 
-const GlobalStyle = createGlobalStyle`
-    * {
-        font-family: 'Trebuchet MS', Helvetica, sans-serif;
-    }
-    body, html {
-      padding : 20px;
-    }
-`
+import GlobalStyle from './utils/style/GlobalStyle'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Router>
-      <GlobalStyle />
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/survey" element={<Survey />} />
-        <Route path="/survey/:questionNumber" element={<Survey />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/freelances" element={<Freelances />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      <ThemeProvider>
+        <SurveyProvider>
+          <GlobalStyle />
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/survey" element={<Survey />} />
+            <Route path="/survey/:questionNumber" element={<Survey />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/freelances" element={<Freelances />} />
+            <Route path="*" element={<Error />} />
+          </Routes>
+          <Footer />
+        </SurveyProvider>
+      </ThemeProvider>
     </Router>
   </React.StrictMode>
 )

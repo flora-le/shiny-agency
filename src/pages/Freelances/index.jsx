@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { ThemeContext } from '../../utils/context'
 
 import DefaultPicture from '../../assets/profile.png'
 import Card from '../../components/Card'
@@ -22,7 +23,7 @@ const CardsContainer = styled.div`
 
 const PageTitle = styled.h1`
   font-size: 30px;
-  color: black;
+  color: ${({ isDarkMode }) => (isDarkMode ? colors.textPrimaryDark : 'black')};
   text-align: center;
   padding-bottom: 30px;
 `
@@ -39,7 +40,78 @@ const LoaderContainer = styled.div`
   justify-content: center;
 `
 
+const defaultFreelances = [
+  {
+    id: '1',
+    name: 'Julien Brun',
+    job: 'Développeur mobile',
+    picture: DefaultPicture,
+  },
+  {
+    id: '2',
+    name: 'Arielle Gautier',
+    job: 'Développeuse fullstack',
+    picture: DefaultPicture,
+  },
+  {
+    id: '3',
+    name: 'Marine Carpentier',
+    job: 'Développeuse frontend',
+    picture: DefaultPicture,
+  },
+  {
+    id: '4',
+    name: 'Lucille Barre',
+    job: 'Product Designer',
+    picture: DefaultPicture,
+  },
+  {
+    id: '5',
+    name: 'Clément Rolland',
+    job: 'Développeur mobile',
+    picture: DefaultPicture,
+  },
+  {
+    id: '6',
+    name: 'Grégoire Chevalier',
+    job: 'Développeur backend',
+    picture: DefaultPicture,
+  },
+  {
+    id: '7',
+    name: 'Raphaël Rodriguez',
+    job: 'Designer',
+    picture: DefaultPicture,
+  },
+  {
+    id: '8',
+    name: 'Hugo Vysa',
+    job: 'Développeur frontend',
+    picture: DefaultPicture,
+  },
+  {
+    id: '9',
+    name: 'Mina Toman',
+    job: 'Développeuse Mobile',
+    picture: DefaultPicture,
+  },
+  {
+    id: '10',
+    name: 'Amélie Leroy',
+    job: 'Développeuse backend',
+    picture: DefaultPicture,
+  },
+  {
+    id: '11',
+    name: 'Maxime Lebrun',
+    job: 'Intégrateur SEO',
+    picture: DefaultPicture,
+  },
+]
+
 function Freelances() {
+  const { theme } = useContext(ThemeContext)
+
   const [isDataLoading, setDataLoading] = useState(false)
   const [freelanceProfiles, setFreelanceProfiles] = useState([])
   const [error, setError] = useState(null)
@@ -57,6 +129,7 @@ function Freelances() {
         .catch((err) => {
           console.log('error', err)
           setError(true)
+          setFreelanceProfiles(defaultFreelances) //show this if error (for demo purpose)
         })
         .finally(() => {
           setDataLoading(false)
@@ -67,7 +140,7 @@ function Freelances() {
 
   return (
     <div>
-      <PageTitle>Find your partner</PageTitle>
+      <PageTitle isDarkMode={theme === 'dark'}>Find your partner</PageTitle>
       <PageSubtitle>
         At Shiny, we gather the best profiles for you.
       </PageSubtitle>

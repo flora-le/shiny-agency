@@ -1,9 +1,9 @@
 // import { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 import colors from '../../utils/style/colors'
 import homePic from '../../assets/home-illustration.svg'
+import { StyledLink } from '../../utils/style/Atoms'
 
 const HomeContainer = styled.div`
   display: flex;
@@ -12,6 +12,8 @@ const HomeContainer = styled.div`
   flex-direction: row;
   background-color: ${colors.backgroundLight};
   padding: 5%;
+  width: fit-content;
+  margin: auto;
 `
 // const Balloon = styled.div`
 //   height: 100px;
@@ -24,16 +26,6 @@ const HomeContainer = styled.div`
 const HomePic = styled.img`
   width: 50%;
 `
-const StyledLink = styled(Link)`
-  padding: 10px 30px 10px 30px;
-  color: ${colors.secondary};
-  text-decoration: none;
-  font-size: 18px;
-  ${(props) =>
-    props.$isFullLink &&
-    `  width: 100px;color: white; border-radius: 30px; background-color: ${colors.primary};`}
-`
-
 const TitleStyle = styled.p`
   font-size: 3rem;
   font-weight: bold;

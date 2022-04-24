@@ -4,6 +4,7 @@ const colors = {
   backgroundLight: '#F9F9FC',
   //backgroundLight: '#EEEEEE',
   error: 'red',
+  textPrimaryDark: 'white',
 }
 
 export default colors
