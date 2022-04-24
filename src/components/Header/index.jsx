@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 
+import colors from '../../utils/style/colors'
 import { StyledLink } from '../../utils/style/Atoms'
 import { ThemeContext } from '../../utils/context'
 import logoShiny from '../../assets/dark-logo.png'
@@ -21,11 +22,22 @@ const LogoImage = styled.img`
   border-radius: 15px;
 `
 
-// const navLinks = [
-//   { to: '/', name: 'home', content: 'Home' },
-//   { to: '/freelances', name: 'freelances', content: 'Profiles' },
-//   { to: '/survey/1', name: 'survey', content: 'Begin test' },
-// ]
+const LinkWrapper = styled.div`
+  padding-top: 30px;
+  & a {
+    color: ${({ isDarkMode }) =>
+      isDarkMode ? colors.textPrimaryDark : colors.secondary};
+  }
+  & a:first-of-type {
+    margin-right: 20px;
+  }
+`
+
+const navLinks = [
+  { to: '/shiny-agency', name: 'home', content: 'Home' },
+  { to: '/freelances', name: 'freelances', content: 'Profiles' },
+  { to: '/survey/1', name: 'survey', content: 'Begin test' },
+]
 
 function Header() {
   const { theme } = useContext(ThemeContext)
@@ -37,28 +49,23 @@ function Header() {
         alt="logo-shiny"
         isDarkMode={theme === 'dark'}
       />
-      <div>
-        {/* {navLinks.map((navLink, index) =>
+      <LinkWrapper isDarkMode={theme === 'dark'}>
+        {navLinks.map((navLink, index) =>
           navLink.name !== 'survey' ? (
-            <StyledLink
-              key={`${navLink.name}-${index}`}
-              to={navLink.to}
-              $isDarkMode={theme === 'dark'}
-            >
+            <StyledLink key={`${navLink.name}-${index}`} to={navLink.to}>
               {navLink.content}
             </StyledLink>
           ) : (
             <StyledLink
               key={`${navLink.name}-${index}`}
               to={navLink.to}
-              $isDarkMode={theme === 'dark'}
               $isFullLink
             >
               {navLink.content}
             </StyledLink>
           )
-        )} */}
-
+        )}
+        {/* 
         <StyledLink to="/shiny-agency" isDarkMode={theme === 'dark'}>
           Home
         </StyledLink>
@@ -67,8 +74,8 @@ function Header() {
         </StyledLink>
         <StyledLink to="/survey/1" $isFullLink $isDarkMode={theme === 'dark'}>
           Test
-        </StyledLink>
-      </div>
+        </StyledLink> */}
+      </LinkWrapper>
     </NavbarStyle>
   )
 }
