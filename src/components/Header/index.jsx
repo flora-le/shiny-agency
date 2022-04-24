@@ -59,7 +59,7 @@ function Header() {
           )
         )} */}
 
-        <StyledLink to="/" isDarkMode={theme === 'dark'}>
+        <StyledLink to="/shiny-agency" isDarkMode={theme === 'dark'}>
           Home
         </StyledLink>
         <StyledLink to="/freelances" isDarkMode={theme === 'dark'}>

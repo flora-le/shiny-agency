@@ -144,7 +144,9 @@ function Freelances() {
       <PageSubtitle>
         At Shiny, we gather the best profiles for you.
       </PageSubtitle>
-      {error && <ErrorText>An error occured !</ErrorText>}
+      {error && (
+        <ErrorText>An error occured ! (surely API not available)</ErrorText>
+      )}
       {isDataLoading ? (
         <LoaderContainer>
           <Loader />

@@ -41,13 +41,14 @@ const LinkWrapper = styled.div`
 
 const ReplyBox = styled.button`
   border: none;
+  font-size: 20px;
   height: 100px;
   width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${({ isDarkMode }) =>
-    isDarkMode ? colors.secondary : colors.backgroundLight};
+    isDarkMode ? 'rgba(255,255,255,0.8)' : colors.backgroundLight};
   border-radius: 30px;
   cursor: pointer;
   box-shadow: ${(props) =>
@@ -189,6 +190,7 @@ function Survey() {
       {answers && !isDataLoading && (
         <ReplyWrapper>
           <ReplyBox
+            isDarkMode={theme === 'dark'}
             onClick={() => {
               saveReply(true)
             }}
@@ -197,6 +199,7 @@ function Survey() {
             Oui
           </ReplyBox>
           <ReplyBox
+            isDarkMode={theme === 'dark'}
             onClick={() => {
               saveReply(false)
             }}
@@ -221,7 +224,9 @@ function Survey() {
         </LinkWrapper>
       )}
 
-      {error && <ErrorText>An error occured !</ErrorText>}
+      {error && (
+        <ErrorText>An error occured ! (Default data displayed)</ErrorText>
+      )}
       {/* <h2>Question {params.questionNumber}</h2> */}
     </SurveyContainer>
   )

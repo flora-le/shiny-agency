@@ -1,4 +1,5 @@
-// import { useState } from 'react'
+import { useContext } from 'react'
+import { ThemeContext } from '../../utils/context'
 import styled from 'styled-components'
 
 import colors from '../../utils/style/colors'
@@ -10,7 +11,10 @@ const HomeContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${colors.backgroundLight};
+  background-color: ${({ isDarkMode }) =>
+    isDarkMode ? 'rgba(255,255,255,0.2)' : colors.backgroundLight};
+  color: ${({ isDarkMode }) =>
+    isDarkMode ? 'rgba(255,255,255,0.9)' : 'black'};
   padding: 5%;
   width: fit-content;
   margin: auto;
@@ -37,8 +41,10 @@ const ContentTextStyle = styled.div`
 
 function Home() {
   // const [size, setSize] = useState(1)
+  const { theme } = useContext(ThemeContext)
+
   return (
-    <HomeContainer>
+    <HomeContainer isDarkMode={theme === 'dark'}>
       {/* <Balloon size={size}></Balloon> */}
       <ContentTextStyle>
         <TitleStyle>
