@@ -3,6 +3,7 @@ const colors = {
   secondary: '#8186A0',
   backgroundLight: '#F9F9FC',
   //backgroundLight: '#EEEEEE',
+  error: 'red',
 }
 
 export default colors

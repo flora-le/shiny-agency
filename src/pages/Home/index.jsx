@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -44,7 +44,7 @@ const ContentTextStyle = styled.div`
 `
 
 function Home() {
-  const [size, setSize] = useState(1)
+  // const [size, setSize] = useState(1)
   return (
     <HomeContainer>
       {/* <Balloon size={size}></Balloon> */}
