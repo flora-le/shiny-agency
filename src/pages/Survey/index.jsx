@@ -91,7 +91,7 @@ function Survey() {
     saveAnswers({ [questionNumber]: answer })
   }
 const { data, isLoading, error } = useFetch(`http://localhost:8000/survey`)
-  const { surveyData } = error? defaultSurvey : data
+  const { surveyData } = error ? defaultSurvey : data
   
   useEffect(() => {
     console.log('answers updated after render', answers)

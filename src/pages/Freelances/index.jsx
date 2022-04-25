@@ -1,12 +1,10 @@
-import { useState, useEffect, useContext } from 'react'
-import { ThemeContext } from '../../utils/context'
-
 import DefaultPicture from '../../assets/profile.png'
 import Card from '../../components/Card'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
 import { Loader } from '../../utils/style/Atoms'
 import { ErrorText } from '../../utils/style/Atoms'
+import { useFetch, useTheme } from '../../utils/hooks'
 
 const CardsContainer = styled.div`
   display: grid;
@@ -110,33 +108,13 @@ const defaultFreelances = [
 ]
 
 function Freelances() {
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useTheme()
 
-  const [isDataLoading, setDataLoading] = useState(false)
-  const [freelanceProfiles, setFreelanceProfiles] = useState([])
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    async function fetchFreelances() {
-      setDataLoading(true)
-      setError(false)
-      await fetch(`http://localhost:8000/freelances`)
-        .then((response) => response.json()) //return promise with json response
-        .then((data) => {
-          console.log('response body', data) //body response
-          setFreelanceProfiles(data.freelancersList)
-        })
-        .catch((err) => {
-          console.log('error', err)
-          setError(true)
-          setFreelanceProfiles(defaultFreelances) //show this if error (for demo purpose)
-        })
-        .finally(() => {
-          setDataLoading(false)
-        })
-    }
-    fetchFreelances() //call async function
-  }, [])
+  const { data, isLoading, error } = useFetch(
+    `http://localhost:8000/freelances`
+  )
+  
+  const { freelancersList } = error ? defaultFreelances : data
 
   return (
     <div>
@@ -147,13 +125,13 @@ function Freelances() {
       {error && (
         <ErrorText>An error occured ! (Default data displayed)</ErrorText>
       )}
-      {isDataLoading ? (
+      {isLoading ? (
         <LoaderContainer>
           <Loader />
         </LoaderContainer>
       ) : (
         <CardsContainer>
-          {freelanceProfiles.map((profile, index) => (
+          {freelancersList.map((profile, index) => (
             <Card
               key={`${profile.name}-${index}`}
               label={profile.job}
