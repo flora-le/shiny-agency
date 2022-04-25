@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ import { Loader } from '../../utils/style/Atoms'
 import { ErrorText } from '../../utils/style/Atoms'
 import { SurveyContext } from '../../utils/context'
 import { ThemeContext } from '../../utils/context'
+import { useFetch } from '../../utils/hooks'
 
 const SurveyContainer = styled.div`
   display: flex;
@@ -82,88 +83,16 @@ function Survey() {
   const questionNumberInt = parseInt(questionNumber)
   const prevQuestionNumber = questionNumberInt === 1 ? 1 : questionNumberInt - 1
   const nextQuestionNumber = questionNumberInt + 1
-  const [isDataLoading, setDataLoading] = useState(false)
-  const [questions, setQuestions] = useState({})
   const { answers, saveAnswers } = useContext(SurveyContext)
-  const [error, setError] = useState(null)
+  
   const { theme } = useContext(ThemeContext)
-
-  /*
-  // Cette syntaxe permet aussi bien de faire des calls API.
-  // Mais pour utiliser await dans une fonction, il faut que celle-ci soit async (pour asynchrone).
-  // Comme la fonction passée à useEffect ne peut pas être asynchrone,
-  // il faut utiliser une fonction qui est appelée dans useEffect et déclarée en dehors, comme ici 👇.
-  // Essayez de commenter le code créé dans le chapitre et de décommenter fetchData pour voir.
-
-  // async function fetchData() {
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/survey`)
-  //     const { surveyData } = await response.json()
-  //     setSurveyData(surveyData)
-  //   } catch (error) {
-  // console.log('===== error =====', error)
-  // setError(true)
-  //   }
-  // }
-  // useEffect(() => {
-  //   // fetchData()
-  //   setDataLoading(true) //css loading
-  //   fetch(`http://localhost:8000/survey`).then((response) =>
-  //     response
-  //       .json()
-  //       .then(({ surveyData }) => {
-  //         console.log(surveyData)
-  //         setQuestions(surveyData)
-  //         setDataLoading(false) //stop loading css
-  //       })
-  //       .catch((error) => console.log('error', error))
-  //   )
-  // }, [])
-  */
 
   function saveReply(answer) {
     saveAnswers({ [questionNumber]: answer })
   }
-  useEffect(() => {
-    async function fetchQuestions() {
-      /*
-      try {
-        setDataLoading(true)
-        const response = await fetch(`http://localhost:8000/survey`)
-        //destructure because surveyData is a property of returned object
-         const { surveyData } = await response.json()
-         setQuestions(surveyData)
-      } catch (err) {
-        console.log('error', err)
-        setError(true)
-      } finally {
-        setDataLoading(false)
-      }
-      */
-
-      //2nd way
-      setDataLoading(true)
-      setError(false)
-      await fetch(`http://localhost:8000/survey`)
-        .then((response) => response.json()) //return promise with json response
-        .then((data) => {
-          //console.log('response body', data) //body response
-          setQuestions(data.surveyData)
-        })
-        .catch((err) => {
-          console.log('error', err)
-          setError(true)
-          setQuestions(defaultSurvey)
-        })
-        .finally(() => {
-          setDataLoading(false)
-        })
-    }
-    fetchQuestions() //call async function
-
-    //console.log('my answers', answers)
-  }, [])
-
+const { data, isLoading, error } = useFetch(`http://localhost:8000/survey`)
+  const { surveyData } = error? defaultSurvey : data
+  
   useEffect(() => {
     console.log('answers updated after render', answers)
   }, [answers])
@@ -180,15 +109,15 @@ function Survey() {
       ) : (
         <Link to="/survey/1">Begin questionnaire</Link>
       )}
-      {isDataLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <QuestionContent isDarkMode={theme === 'dark'}>
-          {questions[questionNumber]}
+          {surveyData && surveyData[questionNumber]}
         </QuestionContent>
       )}
 
-      {answers && !isDataLoading && (
+      {answers && !isLoading && (
         <ReplyWrapper>
           <ReplyBox
             isDarkMode={theme === 'dark'}
@@ -211,15 +140,15 @@ function Survey() {
         </ReplyWrapper>
       )}
 
-      {!isDataLoading && (
+      {!isLoading && (
         <LinkWrapper isDarkMode={theme === 'dark'}>
           {questionNumberInt > 1 && (
             <Link to={'/survey/' + prevQuestionNumber}>Previous</Link>
           )}
-          {questions[questionNumberInt + 1] && (
+          {data[questionNumberInt + 1] && (
             <Link to={'/survey/' + nextQuestionNumber}>Next</Link>
           )}
-          {questionNumber && !questions[questionNumberInt + 1] && (
+          {questionNumber && !data[questionNumberInt + 1] && (
             <Link to={'/results'}>Results</Link>
           )}
         </LinkWrapper>
