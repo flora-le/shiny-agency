@@ -1,4 +1,5 @@
 import { formatJobList } from './'
+import { formatQueryParams } from './'
  
 describe('The formatJobList function', () => {
   //alias test()
@@ -11,4 +12,25 @@ describe('The formatJobList function', () => {
         const expectedState = 'item3'
         expect(formatJobList('item3', 3, 2)).toEqual(expectedState)
     })
+})
+
+describe('The formatQueryParams function', () => {
+  //alias test()
+    it('should return one answer without &', () => {
+        const expectedState = 'a1=0'
+        const answers ={
+          1: 0
+        }
+        expect(formatQueryParams(answers)).toEqual(expectedState)
+    })
+    it('should return answers concatenad with &', () => {
+        const expectedState = 'a1=0&a3=1&a4=1'
+        const answers ={
+          1: 0,
+          3:1,
+          4:1
+        }
+        expect(formatQueryParams(answers)).toEqual(expectedState)
+    })
+
 })
